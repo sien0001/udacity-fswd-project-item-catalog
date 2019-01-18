@@ -12,3 +12,8 @@ class AddItemForm(FlaskForm):
         validators=[DataRequired()]
     )
     submit = SubmitField("Submit")
+
+
+class AddCategoryForm(FlaskForm):
+    name = StringField("Name", validators=[DataRequired()])
+    submit = SubmitField("Submit")

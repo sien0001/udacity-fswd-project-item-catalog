@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block content %}
+
+<div class="container">
+  <div class="container-fluid">
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+          <h1 class="display-4">Add Category</h1>
+          <form method="POST">
+            {{ form.hidden_tag() }}
+            {{ wtf.form_field(form.name) }}
+            {{ form.submit(class_="btn btn-primary")}}
+          </form>
+        </div>
+      </div>
+  </div>
+</div>
+
+{% endblock %}
