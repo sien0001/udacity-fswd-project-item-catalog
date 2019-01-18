@@ -7,7 +7,7 @@ class Config(object):
     SECRET_KEY = os.getenv("SECRET_KEY") or "default secret key"
     SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URI") or \
         "sqlite:///" + os.path.join(basedir, "app.db")
-    SQLALCHEMY_TRACK_MODIFICATION = False
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 
 class GoogleAuthConfig(object):
