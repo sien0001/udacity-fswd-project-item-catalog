@@ -90,6 +90,16 @@ def add_category():
     )
 
 
+@app.route("/catalog/<string:item>/delete", methods=["GET", "POST"])
+@login_required
+def delete_item(item):
+    item = Item.query.filter(Item.title == item).one()
+    db.session.delete(item)
+    db.session.commit()
+    flash("Item has been deleted successfully.")
+    return redirect(url_for("index"))
+
+
 @app.route("/logout")
 @login_required
 def logout():
