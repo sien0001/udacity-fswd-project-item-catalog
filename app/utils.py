@@ -5,6 +5,7 @@ from flask_dance.consumer import oauth_authorized, oauth_error
 from flask_dance.contrib.google import google
 from flask_login import login_user
 from sqlalchemy.orm.exc import NoResultFound
+from flask import flash
 
 
 # Util function which will manage the registration of
@@ -24,7 +25,7 @@ def google_logged_in(blueprint, token):
     google_info = resp.json()
     google_user_id = google_info.get("id")
 
-    # Check the database for existing OAuth token; if one isnt'
+    # Check the database for existing OAuth token; if one isn't
     # there create one.
     try:
         oauth = OAuth.query.filter_by(
@@ -32,7 +33,7 @@ def google_logged_in(blueprint, token):
             provider_user_id=google_user_id
         ).one()
     except NoResultFound:
-        oauth = User(
+        oauth = OAuth(
             provider=blueprint.name,
             provider_user_id=google_user_id,
             token=token
@@ -43,8 +44,8 @@ def google_logged_in(blueprint, token):
         flash(f"{oauth.user.name}, login successful.", category="primary")
     else:
         user = User(
-            email=google_info("email"),
-            name=google_info("name")
+            email=google_info.get("email"),
+            name=google_info.get("name")
         )
         oauth.user = user
         db.session.add_all([user, oauth])

@@ -5,7 +5,7 @@ from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
 from flask_dance.contrib.google import make_google_blueprint
 from flask_dance.consumer.backend.sqla import SQLAlchemyBackend
-from flask_login import current_user
+from flask_login import current_user, LoginManager
 
 # Initialize the Flask app, load in the Config via object
 # and attach the Bootstrap extension
@@ -30,6 +30,18 @@ blueprint.backend = SQLAlchemyBackend(
     user=current_user
 )
 from app.utils import google_logged_in
+
+# Setup the login manager
+login_manager = LoginManager()
+login_manager.login_view = "google.login"
+login_manager.init_app(app)
+
+
+# Util function used by login_manager to retrieve
+# the user object from the database.
+@login_manager.user_loader
+def load_user(user_id):
+    return models.User.query.get(int(user_id))
 
 
 # Configure the routes

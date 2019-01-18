@@ -8,9 +8,15 @@
         <h1 class="display-4">Udacity Full Stack Web Developer Nanodegree, Project Item Catalog</h1>
         <p class="lead">By: Greg Sienkiewicz</p>
         <hr class="my-4">
-        <a href="#">
-            <img src="{{ url_for('static', filename='btn_google_signin.png') }}" style="  height: 20%; width: 20%;">
+        {% if current_user.is_authenticated %}
+        <p>
+            Welcome, <strong>{{ current_user.name }}</strong>
+        </p>
+        {% else %}
+        <a href="{{ url_for('google.login') }}">
+            <img src="{{ url_for('static', filename='btn_google_signin.png') }}" style="height: 15%; width: 15%">
         </a>
+        {% endif %}
     </div>
 
 </div>
