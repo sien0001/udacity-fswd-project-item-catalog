@@ -13,8 +13,8 @@
       {% if current_user.is_authenticated %}
       <br>
       <div class="container">
-        <a href="#">
-            <button type="button" class="btn btn-secondary" disabled>Edit</button>
+        <a href="{{ url_for('edit_item', item=item.title) }}">
+            <button type="button" class="btn btn-secondary">Edit</button>
         </a>
         <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#del_modal">Delete</button>
       </div>

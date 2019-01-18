@@ -1,8 +1,8 @@
 from app import app, db
 from app.models import Category, Item
-from app.forms import AddItemForm, AddCategoryForm
+from app.forms import ItemForm, AddCategoryForm
 
-from flask import render_template, flash, redirect, url_for
+from flask import render_template, flash, redirect, url_for, request
 from flask_login import login_required, logout_user
 
 
@@ -53,7 +53,7 @@ def item(category, item):
 @app.route("/catalog/add_item", methods=["GET", "POST"])
 @login_required
 def add_item():
-    form = AddItemForm()
+    form = ItemForm()
     categories = Category.query.all()
     form.categories.choices = [(c.name, c.name.capitalize()) for c in categories]
     if form.validate_on_submit():
@@ -64,10 +64,37 @@ def add_item():
         )
         db.session.add(item)
         db.session.commit()
-        flash("Item was added successfully.", category="primary")
+        flash("Item was added successfully.", category="success")
         return redirect(url_for("index"))
     return render_template(
-        "add_item.html",
+        "item_form.html",
+        title="Catalog App",
+        form=form
+    )
+
+
+@app.route("/catalog/<string:item>/edit", methods=["GET", "POST"])
+@login_required
+def edit_item(item):
+    item = Item.query.filter(Item.title == item).one()
+    form = ItemForm()
+    categories = Category.query.all()
+    form.categories.choices = [(c.name, c.name.capitalize()) for c in categories]
+    if form.validate_on_submit():
+        item.title = form.title.data
+        item.description = form.description.data
+        item.category = Category.query.filter(Category.name == form.categories.data).one()
+        db.session.commit()
+        flash("Item has been updated successfully.", category="success")
+        return redirect(url_for("index"))
+    elif request.method == "GET":
+        form.title.data = item.title
+        form.description.data = item.description
+        form.categories.data = sorted(
+            form.categories.choices, key=lambda c: item.category.name > c[0]
+        )
+    return render_template(
+        "item_form.html",
         title="Catalog App",
         form=form
     )
@@ -81,7 +108,7 @@ def add_category():
         category = Category(name=form.name.data)
         db.session.add(category)
         db.session.commit()
-        flash("Category was added successfully.", category="primary")
+        flash("Category was added successfully.", category="success")
         return redirect(url_for("index"))
     return render_template(
         "add_category.html",
@@ -96,7 +123,7 @@ def delete_item(item):
     item = Item.query.filter(Item.title == item).one()
     db.session.delete(item)
     db.session.commit()
-    flash("Item has been deleted successfully.")
+    flash("Item has been deleted successfully.", category="success")
     return redirect(url_for("index"))
 
 
