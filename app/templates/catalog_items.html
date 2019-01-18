@@ -14,7 +14,10 @@
           </h4></li>
           {% for item in category_items %}
             <li class="list-group-item">
-              {{ item.title.capitalize() }} <em>({{item.category.name.capitalize()}})</em>
+              <a href="{{ url_for('item', category=item.category.name, item=item.title) }}">
+                {{ item.title.capitalize() }} 
+              </a>
+              <em>({{item.category.name.capitalize()}})</em>
             </li>
           {% endfor %}
         </ul>

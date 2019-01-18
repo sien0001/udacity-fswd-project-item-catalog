@@ -38,6 +38,17 @@ def catalog_items(category):
     )
 
 
+@app.route("/catalog/<string:category>/<string:item>")
+def item(category, item):
+    cat = Category.query.filter(Category.name == category).one()
+    i = Item.query.filter_by(category=cat).filter(Item.title == item).one()
+    return render_template(
+        "item.html",
+        title="Catalog App",
+        item=i
+    )
+
+
 @app.route("/logout")
 @login_required
 def logout():
