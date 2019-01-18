@@ -21,6 +21,23 @@ def index():
     )
 
 
+@app.route("/catalog/<string:category>/items")
+def catalog_items(category):
+    categories = Category.query.all()
+    category_items = Item.query. \
+        filter_by(
+            category=next(cat for cat in categories if cat.name == category)
+        ).all()
+    return render_template(
+        "catalog_items.html",
+        title="Catalog App",
+        categories=categories,
+        category=category,
+        category_items=category_items,
+        category_items_count=len(category_items)
+    )
+
+
 @app.route("/logout")
 @login_required
 def logout():
