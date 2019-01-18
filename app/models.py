@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from app import db
 
 from flask_login import UserMixin
@@ -41,5 +43,6 @@ class Item(db.Model):
     )
     title = db.Column(db.String(100), unique=True, index=True)
     description = db.Column(db.String(250))
+    date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
     category = db.relationship(Category)
