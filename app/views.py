@@ -1,7 +1,8 @@
 from app import app, db
 from app.models import Category, Item
+from app.forms import AddItemForm
 
-from flask import render_template, flash, redirect
+from flask import render_template, flash, redirect, url_for
 from flask_login import login_required, logout_user
 
 
@@ -46,6 +47,29 @@ def item(category, item):
         "item.html",
         title="Catalog App",
         item=i
+    )
+
+
+@app.route("/catalog/add_item", methods=["GET", "POST"])
+@login_required
+def add_item():
+    form = AddItemForm()
+    categories = Category.query.all()
+    form.categories.choices = [(c.name, c.name.capitalize()) for c in categories]
+    if form.validate_on_submit():
+        item = Item(
+            title=form.title.data,
+            description=form.description.data,
+            category=Category.query.filter(Category.name == form.categories.data).one()
+        )
+        db.session.add(item)
+        db.session.commit()
+        flash("Item was added successfully.", category="primary")
+        return redirect(url_for("index"))
+    return render_template(
+        "add_item.html",
+        title="Catalog App",
+        form=form
     )
 
 

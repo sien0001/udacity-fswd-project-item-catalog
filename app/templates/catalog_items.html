@@ -9,6 +9,11 @@
 
       <div class="col-sm-8">
         <ul class="list-group list-group-flush">
+          {% if current_user.is_authenticated %}
+            <li class="list-group-item">
+              <a href="{{ url_for('add_item') }}">Add Item</a>
+            </li>
+          {% endif %}
           <li class="list-group-item active"><h4>
             {{category.capitalize()}} Items ({{ category_items_count }} items)
           </h4></li>
