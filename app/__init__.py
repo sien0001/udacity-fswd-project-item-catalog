@@ -3,6 +3,9 @@ from config import Config, GoogleAuthConfig
 from flask import Flask
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
+from flask_dance.contrib.google import make_google_blueprint
+from flask_dance.consumer.backend.sqla import SQLAlchemyBackend
+from flask_login import current_user
 
 # Initialize the Flask app, load in the Config via object
 # and attach the Bootstrap extension
@@ -13,6 +16,21 @@ Bootstrap(app)
 # Configure the database (SQLAlchemy)
 db = SQLAlchemy(app)
 from app import models
+
+# Configure Google OAuth dance and blueprint
+blueprint = make_google_blueprint(
+    client_id=GoogleAuthConfig.CLIENT_ID,
+    client_secret=GoogleAuthConfig.CLIENT_SECRET,
+    scope=["email", "profile"]
+)
+app.register_blueprint(blueprint, url_prefix="/login")
+blueprint.backend = SQLAlchemyBackend(
+    model=models.OAuth,
+    session=db.session,
+    user=current_user
+)
+from app.utils import google_logged_in
+
 
 # Configure the routes
 from app import views
