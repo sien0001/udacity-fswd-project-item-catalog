@@ -60,12 +60,15 @@ def item(category, item):
 def add_item():
     form = ItemForm()
     categories = Category.query.all()
-    form.categories.choices = [(c.name, c.name.capitalize()) for c in categories]
+    form.categories.choices = \
+        [(c.name, c.name.capitalize()) for c in categories]
     if form.validate_on_submit():
         item = Item(
             title=form.title.data,
             description=form.description.data,
-            category=Category.query.filter(Category.name == form.categories.data).one()
+            category=Category.query.filter(
+                    Category.name == form.categories.data
+                ).one()
         )
         db.session.add(item)
         db.session.commit()
@@ -84,11 +87,14 @@ def edit_item(item):
     item = Item.query.filter(Item.title == item).one()
     form = ItemForm()
     categories = Category.query.all()
-    form.categories.choices = [(c.name, c.name.capitalize()) for c in categories]
+    form.categories.choices = \
+        [(c.name, c.name.capitalize()) for c in categories]
     if form.validate_on_submit():
         item.title = form.title.data
         item.description = form.description.data
-        item.category = Category.query.filter(Category.name == form.categories.data).one()
+        item.category = Category.query.filter(
+            Category.name == form.categories.data
+        ).one()
         db.session.commit()
         flash("Item has been updated successfully.", category="success")
         return redirect(url_for("index"))

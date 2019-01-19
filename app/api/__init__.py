@@ -8,7 +8,7 @@ class Catalog(Resource):
         catalog = list()
         for c in Category.query.all():
             items = list()
-            for i in Item.query.filter(Item.category_id==c.id).all():
+            for i in Item.query.filter(Item.category_id == c.id).all():
                 items.append(
                     {
                         'id': i.id,
@@ -22,5 +22,5 @@ class Catalog(Resource):
                     'name': c.name,
                     'items': items
                 }
-            )   
+            )
         return {"Categories": catalog}
