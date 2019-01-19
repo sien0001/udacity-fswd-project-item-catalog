@@ -11,6 +11,13 @@ Please follow these instructions to get a copy of this project up and running on
 
 The Catalog App uses OAuth 2.0 authorization to access Google APIs. You will require valid authorization credentials to connect this application to Google's OAuth2 server. Please follow the instruction from Goolge on how to properly configure [OAuth 2.0 for Client-side Web Applications](https://developers.google.com/identity/protocols/OAuth2UserAgent).
 
+Specify the following Authorised redirect URIs in your OAuth Client credentials configuration.
+
+```
+http://127.0.0.1:5000/login/google/authorized
+http://localhost:5000/login/google/authorized
+```
+
 Once you have obtained Google OAuth credentials, set these as Environmental Variables in your shell.
 
 ```
