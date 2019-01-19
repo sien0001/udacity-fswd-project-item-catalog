@@ -6,6 +6,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_dance.contrib.google import make_google_blueprint
 from flask_dance.consumer.backend.sqla import SQLAlchemyBackend
 from flask_login import current_user, LoginManager
+from flask_restful import Api
 
 # Initialize the Flask app, load in the Config via object
 # and attach the Bootstrap extension
@@ -16,6 +17,11 @@ Bootstrap(app)
 # Configure the database (SQLAlchemy)
 db = SQLAlchemy(app)
 from app import models
+
+# Configure the API endpoints (Flask-Restful)
+from app.api import Catalog
+api = Api(app)
+api.add_resource(Catalog, "/api/catalog")
 
 # Configure Google OAuth dance and blueprint
 blueprint = make_google_blueprint(

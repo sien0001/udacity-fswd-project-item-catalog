@@ -6,6 +6,11 @@ from flask import render_template, flash, redirect, url_for, request
 from flask_login import login_required, logout_user
 
 
+@app.route("/api")
+def api():
+    return render_template("api.html", title="Catalog App")
+
+
 @app.route("/")
 @app.route("/index")
 def index():

@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+            <h1 class="display-4">Catalog App's API Info</h1>
+            <p class="lead">The Catalog App can be access via a restful API. The endpoints are defined below.</p>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-8">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item active"><h4>API Endpoints</h4></li>
+                    <li class="list-group-item">
+                            <a href="/api/catalog">Catalog</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
